@@ -1,0 +1,70 @@
+---
+title: "The Importance of Parking"
+author: "Oscar Sanchez"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+"How many stars do they have on Yelp?" This is one of the most common questions that most people have when it comes to choosing food. Today, when it comes to finding any sort of information on a restaurant, bar, or any other type of business that includes food, the majoirty of smartphone users tend to   glance through Yelp. Yelp ultimately summarizes the various amount of information on the services that a business has to offer. Whether, it's finding the hours of operations for a chinese restaurant or if a local wing house has a full stocked bar, Yelp has this information that is available to the public.
+
+One of the most unique charatceristics of Yelp is the 5-star rating that is given to every business. Each Yelp member has the option to leave a review for any business that they hve recently visited. They could write anything they want regarding their visit to the business, whether they had great service by the employees or even a review on how the waitress brought out the wrong order. At the end of the review, they rate the business from a scale of 1 to 5: 5 meaning the experience at the business was exceptional, and 1 meaning the experience was terrible. Today, there are close to 100 million reviews for roughly 2 million business locations. Therefore, we can say Yelp has a huge influence on the average Yelp user's perception on a certain business.
+
+There are many factors that are considered for the final Yelp rating that users post on their review for restaurants, bars, and other establishments. Whether it's the quality of the food, beer selection, or customer service provided by a restaurant, there are a lot of criteria that go into the 5-star rating of a Yelp review. One of the factors that many people might not consider important is the parking provided by the business. Sometimes, if a Yelp user is going to have a bite to eat at a local burger joint, the difficulty of finding parking might alter the rating this particular Yelp reviewer. I want to find out if parking is a factor that brings the final Yelp rating of a business lower than it should be.
+
+## Dataset
+
+The dataset I will use to solve the true importance of parking is provided by Yelp. Every year, Yelp hosts a competition for data scientists and each year has a different prompt. For example, this year Yelp has asked competitors to analyze the pictures that are left by reviewers. A larger number of data analysis teams enter the competition for a generous prize reward and the possibility of future employment at Yelp. However, even though I am not entering the competition, Yelp still has their dataset available to the public. The dataset is available to download on their competition website <https://www.yelp.com/dataset_challenge>.  
+
+The data that is provided by Yelp is divided into 5 datasets:
+```{r, eval=FALSE}
+  yelp_academic_dataset_business.json 
+  yelp_academic_dataset_checkin.json 
+  yelp_academic_dataset_review.json 
+  yelp_academic_dataset_tip.json 
+  yelp_academic_dataset_user.json
+
+```
+
+Although there are 5 datasets that are provided by Yelp, the dataset that includes the general "business" information (first one listed above) is the dataset I used to help solve my question regarding parking. The information from this Yelp dataset is virtually the same information one sees on the Yelp profile for a business. In general, it has the name of the business, location, hours of operation, Yelp rating as well as parking information. The dataset also includes information on alcohol, price range, number of reviews, type of business, and typical attire to be worn. 
+
+The parking information, however, is displayed different than I expected. Parking is displayed in five different variables or columns in the dataset: Parking Lot, Street Parking, Parking Validated, Parking Garage and Valet Parking. Each observation for each variable displays either True or False: True meaning the business offers that type of parking service and False meaning the business does not offer that they of parking service.
+
+For example:
+```{r y, eval=FALSE}
+> head(y)
+                      name attributes.Parking.lot attributes.Parking.garage
+1                Mr Hoagie                  FALSE                     FALSE
+2             Clancy's Pub                   <NA>                      <NA>
+3         Joe Cislo's Auto                   <NA>                      <NA>
+4 Cool Springs Golf Center                   <NA>                      <NA>
+5                  Verizon                  FALSE                     FALSE
+6            Emil's Lounge                  FALSE                     FALSE
+
+```
+
+
+Although my main goal is to find out whether parking is an essentail factor of a Yelp rating, I must also take into consideration other factors. From the dataset, the factors I believed would make a significant impact on the final 5-star rating were the number of reviews, the presence of alcohol, and the price range of the business. The amount of reviews affects the rating because the more reviews a business has, the probability of the business being successful is higher. This leads to the idea that more reviews on Yelp means that a larger number of people enjoy the service and goods that the business provides. Since my target population is restaurants, bars, and other food spots, alcohol plays a huge role in my study. Alcohol is a major asset to today's social atmosphere. Many people enjoy a meal or snack accompanied by a certain alcoholic beverage. Therefore, in my opinion, alcohol brings more positive ratings and reviews on Yelp. Price also has significant imapct on the ratings on Yelp. When a person goes to an expensive restaurant, they expect the food and service to be of high quailty, and thus, higher satisfaction.
+
+## Data Wrangling
+
+The business dataset that was provided by Yelp was a massive dataset. Overall, there were over 70,000 observations, with each observation being a business. However, all of these observations were not restaurants, bars, lounges, or any food/beverage related business. Therefore, I started my data cleaning procees by only including these types of businesses. There were two variables that displayed this particular characteristic: Categorie1 and Categorie2. These two variables included the category in which each business belonged. Categorie1 was the main category charatceristic or indusrty the business fell into. Categorie2 was the secondary indusrty.
+
+For example:
+```{r, eval=FALSE}
+> head(y1)
+                      name categories1    categories2
+1                Mr Hoagie   Fast Food    Restaurants
+2             Clancy's Pub        <NA>           <NA>
+3         Joe Cislo's Auto Auto Repair     Automotive
+4 Cool Springs Golf Center Active Life      Mini Golf
+5                  Verizon    Shopping  Home Services
+6            Emil's Lounge        Bars American (New)
+```
+
+Since my main target were food related businesses, I narrowed my dataset to only include these types of businesses. The keywords I included were Food, Restaurants, Bars, Mexican, Chinese, Italian, Pizza, Donuts, Fast Food, Sandwiches, Lounges, Korean, Coffee & Tea, Bakeries, Burgers, and Cafes. Although there were other keywords that would have worked for testing my problem, these keywords were enough to truly represent my population. Since there were two different variables, as long as one of the variables had Food, Restaurants, or Bars, the business was a fit. For example, if a business had Mexican in categories1, it would have Restaurant in categories2. Therefore, this made the business, and other business with the same aspects, part of my final dataset. After cleaning the dataset with this method, there were 29,774 observations in the final dataset. 
+
